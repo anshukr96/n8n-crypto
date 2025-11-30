@@ -32,7 +32,7 @@ const EdgeSchema = new Schema({
 const PositionSchema = new Schema({
     id: {
         type: String,
-        required: true
+        required: false
     },
     x: {
         type: Number,
@@ -79,7 +79,7 @@ const WorkflowSchema = new Schema({
         ref: 'Users'
     },
     nodes: [WorkflowNodeSchema],
-    edge: [EdgeSchema]
+    edges: [EdgeSchema]
 })
 
 const CredentialsTypeSchema = new Schema({

@@ -6,7 +6,7 @@ import { Timer } from '@/nodes/triggers/Timer';
 import type { ActionSelection, FlowEdge, FlowNode, NodeKind, NodeMetadata } from '@/types';
 import { addEdge, applyEdgeChanges, applyNodeChanges, Background, Controls, MiniMap, ReactFlow } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import ActionSheet from './ActionSheet';
 import TriggerSheet from './TriggerSheet';
 
@@ -18,7 +18,11 @@ const nodeTypes = {
   'hyperliquid': Hyperliquid
 };
 
-export default function CreateWorkFlow() {
+interface CreateWorkFlowProps {
+  onFlowChange?: (nodes: FlowNode[], edges: FlowEdge[]) => void;
+}
+
+export default function CreateWorkFlow({ onFlowChange }: CreateWorkFlowProps) {
   const [nodes, setNodes] = useState<FlowNode[]>([]);
   const [edges, setEdges] = useState<FlowEdge[]>([]);
   const [selectedAction, setSelectedAction] = useState<ActionSelection | null>(null);
@@ -97,6 +101,10 @@ export default function CreateWorkFlow() {
     setSelectedAction(null);
     setShowActionSheet(false);
   };
+
+  useEffect(() => {
+    onFlowChange?.(nodes, edges);
+  }, [nodes, edges]);
 
   return (
     <div style={{ width: '100vw', height: '100vh' }} className="bg-slate-50 dark:bg-slate-950">
